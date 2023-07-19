@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import './Schedule.css';
-const Schedule = ({ setSchedule }) => {
+import { db } from "../../services/firebase/config";
+import { collection, addDoc } from "firebase/firestore";
+
+
+
+const Schedule = () => {
     const [chestTime, setChestTime] = useState('');
     const [backTime, setBackTime] = useState('');
     const [legsTime, setLegsTime] = useState('');
@@ -11,10 +16,14 @@ const Schedule = ({ setSchedule }) => {
     const [legsDays, setLegsDays] = useState([]);
     const [shouldersDays, setShouldersDays] = useState([]);
 
-    const handleFormSubmit = (e) => {
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        const schedule = [
+        const scheduleCollection = collection(db, "schedule");
+
+        // split your newSchedule array into individual items
+        const newSchedule = [
             { title: 'Chest and Triceps', time: chestTime, days: chestDays },
             { title: 'Back and Biceps', time: backTime, days: backDays },
             { title: 'Legs', time: legsTime, days: legsDays },
@@ -22,8 +31,17 @@ const Schedule = ({ setSchedule }) => {
         ];
 
 
-        setSchedule(schedule);
+        // iterate over the newSchedule array and add each schedule to the Firestore
+        for (const schedule of newSchedule) {
+            try {
+                const docRef = await addDoc(scheduleCollection, schedule);
+                console.log("Document written with ID: ", docRef.id);
+            } catch (error) {
+                console.error("Error adding document: ", error);
+            }
+        }
     };
+
 
     const renderTimeOptions = (muscleGroup) => {
         const timeOptions = [];
@@ -88,7 +106,6 @@ const Schedule = ({ setSchedule }) => {
         <Container>
             <h2>Schedule</h2>
             <Form onSubmit={handleFormSubmit}>
-                <Form onSubmit={handleFormSubmit} data-testid="schedule-form"></Form>
                 <Form.Group controlId="chestTimeRange">
                     <Form.Label><span className="bold-title">Chest and Triceps</span></Form.Label>
                     <Form.Control as="select" size="sm" value={chestTime} onChange={(e) => setChestTime(e.target.value)}>
@@ -146,114 +163,3 @@ export default Schedule;
 
 
 
-
-
-
-
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
-// import axios from 'axios';
-
-// const Schedule = () => {
-//     const [schedule, setSchedule] = useState([]);
-
-//     useEffect(() => {
-//         // fetch schedule data here
-//         axios.get('your-api-endpoint')
-//             .then(res => setSchedule(res.data))
-//             .catch(err => console.log(err));
-//     }, []);
-
-//     const renderSchedule = (day) => {
-//         return schedule[day].map((exercise, index) => <ListGroup.Item key={index}>{exercise}</ListGroup.Item>);
-//     };
-
-//     return (
-//         <Container>
-//             <Row>
-//                 <Col md={12} className="d-flex justify-content-center">
-//                     <h2>Schedule</h2>
-//                 </Col>
-//             </Row>
-//             <Row>
-//                 <Col md={6} className="d-flex justify-content-center">
-//                     <Card style={{ width: '18rem' }}>
-//                         <Card.Header>Leg Day</Card.Header>
-//                         <ListGroup variant="flush">
-//                             {renderSchedule('legDay')}
-//                         </ListGroup>
-//                     </Card>
-//                     {/* Repeat for other workout days */}
-//                 </Col>
-//             </Row>
-//         </Container>
-//     );
-// }
-
-// export default Schedule;
-
-
-
-// import React from 'react';
-// import { Container, Table } from 'react-bootstrap';
-
-// const Schedule = () => {
-//     return (
-//         <Container>
-//             <h2 className="text-center my-4">Workout Schedule</h2>
-//             <Table striped bordered hover>
-//                 <thead>
-//                     <tr>
-//                         <th>Day</th>
-//                         <th>Workout</th>
-//                         <th>Duration (mins)</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     <tr>
-//                         <td>Monday</td>
-//                         <td>Cardio</td>
-//                         <td>45</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Tuesday</td>
-//                         <td>Upper Body Strength</td>
-//                         <td>60</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Wednesday</td>
-//                         <td>Yoga</td>
-//                         <td>30</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Thursday</td>
-//                         <td>Lower Body Strength</td>
-//                         <td>60</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Friday</td>
-//                         <td>Cardio</td>
-//                         <td>45</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Saturday</td>
-//                         <td>Rest Day</td>
-//                         <td>-</td>
-//                     </tr>
-//                     <tr>
-//                         <td>Sunday</td>
-//                         <td>Rest Day</td>
-//                         <td>-</td>
-//                     </tr>
-//                 </tbody>
-//             </Table>
-//         </Container>
-//     );
-// };
-
-// export default Schedule;
