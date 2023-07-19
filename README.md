@@ -47,11 +47,9 @@ To get a local copy of this project up and running, follow these steps:
 * Open the .env file and replace the placeholder values with your Firebase configuration values.
 
 
+## **Starting The Application**
 
-
-
-
-4. **npm start**
+ To start the application, run the following command in the project directory:
 
 `npm start`
 
