@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import './Schedule.css';
 import { db } from "../../services/firebase/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const Schedule = () => {
     const [chestTime, setChestTime] = useState('');
@@ -24,6 +24,7 @@ const Schedule = () => {
             backAndBiceps: { MuscleGroupDay: 'Back and Biceps', time: backTime, days: backDays },
             legs: { MuscleGroupDay: 'Legs', time: legsTime, days: legsDays },
             shoulders: { MuscleGroupDay: 'Shoulders', time: shouldersTime, days: shouldersDays },
+            timestamp: serverTimestamp(),
         };
 
         try {
