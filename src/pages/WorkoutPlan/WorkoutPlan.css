@@ -1,0 +1,20 @@
+.workout-plan-heading {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.muscle-group-label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.submit-button {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.bold-title {
+    font-weight: bold;
+}

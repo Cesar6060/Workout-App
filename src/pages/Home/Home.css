@@ -1,0 +1,13 @@
+.custom-calendar {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.custom-calendar abbr {
+    font-size: 2em;
+}
+
+.custom-calendar .react-calendar__tile {
+    height: 100px;
+}
