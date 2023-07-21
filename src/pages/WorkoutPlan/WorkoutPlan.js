@@ -50,7 +50,7 @@ const WorkoutPlan = () => {
         try {
             await addDoc(collection(db, "workoutPlans"), {
                 workoutPlan: muscleGroupDays,
-                timestamp: new Date(), // Add timestamp here
+                timestamp: new Date(),
             });
             alert('Workout plan successfully saved!');
         } catch (error) {
